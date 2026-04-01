@@ -1,126 +1,673 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cardápio Nossa Praia</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-<style>
-body {
-  font-family: 'Poppins', sans-serif;
-  background: linear-gradient(to bottom, #0ea5a4, #022c43);
-  color: white;
-  margin: 0;
-  padding: 0;
-}
-.container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
-}
-.header {
-  text-align: center;
-  margin-bottom: 30px;
-}
-.header h1 {
-  font-size: 42px;
-  margin: 0;
-}
-.section {
-  margin-bottom: 25px;
-}
-.section h2 {
-  border-bottom: 2px solid rgba(255,255,255,0.3);
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-}
-.item {
-  display: flex;
-  justify-content: space-between;
-  margin: 6px 0;
-}
-.footer {
-  text-align: center;
-  margin-top: 30px;
-  font-size: 14px;
-  opacity: 0.8;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossa Praia - Cardápio Completo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --ocean-blue: #0066cc;
+            --deep-blue: #004499;
+            --sun-orange: #ff8c00;
+            --sun-yellow: #ffb700;
+            --sand: #f4e4c1;
+            --white: #ffffff;
+            --dark: #1a1a2e;
+            --gray: #666666;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--ocean-blue) 0%, var(--deep-blue) 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--ocean-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top-color: var(--sun-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2), transparent);
+        }
+
+        .logo-container {
+            max-width: 400px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .logo {
+            width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .subtitle {
+            font-family: 'Pacifico', cursive;
+            color: var(--sun-yellow);
+            font-size: 1.5rem;
+            margin-top: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .menu-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .menu-title h1 {
+            font-family: 'Pacifico', cursive;
+            color: var(--white);
+            font-size: 3rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+
+        .menu-title p {
+            color: var(--sand);
+            font-size: 1.1rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, var(--sun-orange) 0%, var(--sun-yellow) 100%);
+            color: var(--white);
+            padding: 20px 30px;
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .section-header:hover {
+            filter: brightness(1.1);
+        }
+
+        .section-header .icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+            margin-left: 10px;
+        }
+
+        .section-header .toggle {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            margin-left: 10px;
+        }
+
+        .section.collapsed .toggle {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .section.collapsed .section-content {
+            display: none;
+        }
+
+        .subcategory {
+            margin-bottom: 30px;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .subcategory:last-child {
+            margin-bottom: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .subcategory-title {
+            color: var(--ocean-blue);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid var(--sun-yellow);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .subcategory-icon {
+            font-size: 1.5rem;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 15px;
+            padding: 20px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,102,204,0.2);
+            border-color: var(--sun-yellow);
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sun-orange), var(--sun-yellow));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .product-card.indisponivel {
+            opacity: 0.6;
+            background: #f0f0f0;
+        }
+
+        .product-card.indisponivel::after {
+            content: 'INDISPONIVEL';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            background: rgba(255,0,0,0.8);
+            color: white;
+            padding: 5px 15px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            border-radius: 5px;
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+            gap: 10px;
+        }
+
+        .product-name {
+            font-weight: 700;
+            color: var(--dark);
+            font-size: 1.1rem;
+            flex: 1;
+        }
+
+        .product-price {
+            background: linear-gradient(135deg, var(--sun-orange) 0%, var(--sun-yellow) 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            box-shadow: 0 4px 15px rgba(255,140,0,0.3);
+        }
+
+        .product-description {
+            color: var(--gray);
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 8px;
+        }
+
+        .product-badges {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+        }
+
+        .product-banner {
+            display: inline-block;
+            background: var(--ocean-blue);
+            color: white;
+            padding: 3px 10px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-banner.destaque {
+            background: linear-gradient(135deg, #ff4757 0%, #ff6348 100%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,71,87,0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255,71,87,0); }
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--white);
+        }
+
+        .footer p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .social-links {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+            color: var(--sun-yellow);
+        }
+
+        @media (max-width: 768px) {
+            .menu-title h1 {
+                font-size: 2rem;
+            }
+
+            .section-header {
+                font-size: 1.5rem;
+                padding: 15px 20px;
+            }
+
+            .section-content {
+                padding: 20px;
+            }
+
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media print {
+            body {
+                background: white;
+            }
+
+            .section {
+                box-shadow: none;
+                border: 1px solid #ddd;
+                break-inside: avoid;
+            }
+        }
+    </style>
+<base target="_blank">
 </head>
 <body>
-<div class="container">
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+        <p style="color: white; margin-top: 20px; font-family: 'Pacifico', cursive;">Carregando cardápio...</p>
+    </div>
 
-<div class="header">
-  <h1>🌴 Nossa Praia</h1>
-  <p>Peixes crocantes e clima de praia em Cosmópolis</p>
-</div>
+    <header class="header">
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo" class="logo" id="logo-img">
+        </div>
+        <p class="subtitle" id="slogan">O melhor da praia no seu prato!</p>
+    </header>
 
-<div class="section">
-  <h2>🐟 Filés</h2>
-  <div class="item"><span>Cação</span><span>R$ 48</span></div>
-  <div class="item"><span>Pescada</span><span>R$ 48</span></div>
-  <div class="item"><span>Merluza</span><span>R$ 45</span></div>
-  <div class="item"><span>Tilápia</span><span>R$ 48</span></div>
-  <div class="item"><span>Pintado</span><span>R$ 49</span></div>
-  <div class="item"><span>Lambari</span><span>R$ 40</span></div>
-  <div class="item"><span>Camarão 7 Barbas</span><span>R$ 42</span></div>
-</div>
+    <div class="container">
+        <div class="menu-title">
+            <h1>Cardápio</h1>
+            <p id="subtitulo">Porções fresquinhas e bebidas geladas</p>
+        </div>
 
-<div class="section">
-  <h2>🍤 Petiscos</h2>
-  <div class="item"><span>Bolinho de Bacalhau (8)</span><span>R$ 30</span></div>
-  <div class="item"><span>Bolinho de Tilápia (8)</span><span>R$ 39</span></div>
-  <div class="item"><span>Risolis de Camarão (8)</span><span>R$ 35</span></div>
-  <div class="item"><span>Camarão Empanado (8)</span><span>R$ 40</span></div>
-  <div class="item"><span>Marisco ao Vinagrete</span><span>R$ 45</span></div>
-  <div class="item"><span>Casquinha de Siri</span><span>R$ 12</span></div>
-  <div class="item"><span>Lula ao Alho e Óleo</span><span>R$ 40</span></div>
-</div>
+        <div id="menu-container"></div>
+    </div>
 
-<div class="section">
-  <h2>🍟 Acompanhamentos</h2>
-  <div class="item"><span>Batata Frita</span><span>R$ 27</span></div>
-  <div class="item"><span>Mandioca Frita</span><span>R$ 27</span></div>
-</div>
+    <footer class="footer">
+        <p id="footer-nome">🌴 Nossa Praia Bar e Petiscos 🌴</p>
+        <p style="margin-top: 10px; font-size: 0.9rem;">O melhor sabor da praia!</p>
+        <div class="social-links" id="social-links"></div>
+    </footer>
 
-<div class="section">
-  <h2>🍺 Bebidas</h2>
-  <div class="item"><span>Heineken 600ml</span><span>R$ 15</span></div>
-  <div class="item"><span>Império 600ml</span><span>R$ 11</span></div>
-  <div class="item"><span>Skol 600ml</span><span>R$ 12</span></div>
-  <div class="item"><span>Brahma 600ml</span><span>R$ 12</span></div>
-  <div class="item"><span>Original 600ml</span><span>R$ 14</span></div>
-</div>
+    <script>
+        // ============================================
+        // DADOS DO CARDÁPIO - EDITE AQUI
+        // ============================================
 
-<div class="section">
-  <h2>🍹 Caipirinhas</h2>
-  <div class="item"><span>Sake</span><span>R$ 20</span></div>
-  <div class="item"><span>Vodka</span><span>R$ 20</span></div>
-  <div class="item"><span>Gin</span><span>R$ 18</span></div>
-  <div class="item"><span>Pinga</span><span>R$ 15</span></div>
-</div>
+        const MENU_DATA = {
+            "restaurante": {
+                "nome": "Nossa Praia",
+                "subtitulo": "Bar e Petiscos",
+                "slogan": "O melhor da praia no seu prato!",
+                "logo": "logo.png",
+                "contato": {
+                    "instagram": "@nossapraia.bar",
+                    "whatsapp": "(19)99815-1108"
+                }
+            },
+            "cardapio": [
+                // ============================================
+                // SEÇÃO 1: PORÇÕES
+                // ============================================
+                {
+                    "id": "porcoes",
+                    "titulo": "Porcoes",
+                    "icone": "🌊",
+                    "subcategorias": [
+                        {
+                            "id": "iscas",
+                            "titulo": "Iscas de Peixe",
+                            "icone": "🐟",
+                            "produtos": [
+                                {"id": "tilapia", "nome": "Tilápia", "descricao": "Tilápia premium", "preco": 45, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "cacao", "nome": "Cação", "descricao": "Fresco empanado crocante", "preco": 48, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "pescada", "nome": "Pescada", "descricao": "Tradicional isca de pescada", "preco": 45, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "merluza", "nome": "Merluza", "descricao": "Suave e delicado", "preco": 45, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "lambari", "nome": "Lambari", "descricao": "Peixinho crocante tradicional", "preco": 35, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "pintado", "nome": "Pintado", "descricao": "Peixe de água doce regional", "preco": 45, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "frutosdomar",
+                            "titulo": "Frutos do Mar",
+                            "icone": "🦐",
+                            "produtos": [
+                                {"id": "camaraorosa", "nome": "Camarão Empanado Rosa G", "descricao": "Camarões selecionados", "preco": 45, "unidade": "8 UN", "destaque": false, "disponivel": true},
+                                {"id": "casquinha", "nome": "Casquinha de Siri", "descricao": "Bem temperado", "preco": 12, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "lula", "nome": "Lula", "descricao": "Ao alho e óleo", "preco": 35, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "camarao7b", "nome": "Camarão 7B", "descricao": "Camarão empanado sequinho", "preco": 48, "unidade": null, "destaque": true, "disponivel": true},
+                                {"id": "marisco", "nome": "Marisco", "descricao": "Ao vinagrete - frescor do mar", "preco": 45, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "petiscos",
+                            "titulo": "Petiscos Especiais",
+                            "icone": "🧆",
+                            "produtos": [
+                                {"id": "bolinhobacalhau", "nome": "Bolinho de Bacalhau", "descricao": "Receita portuguesa tradicional", "preco": 32, "unidade": "8 UN", "destaque": false, "disponivel": true},
+                                {"id": "bolinhotilapia", "nome": "Bolinho de Tilápia", "descricao": "Saboroso e crocante", "preco": 32, "unidade": "8 UN", "destaque": false, "disponivel": true},
+                                {"id": "risolis", "nome": "Risolis de Camarão", "descricao": "Massa leve com catupiry", "preco": 35, "unidade": "8 UN", "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "acompanhamentos",
+                            "titulo": "Acompanhamentos",
+                            "icone": "🍟",
+                            "produtos": [
+                                {"id": "batata", "nome": "Batata Frita", "descricao": "Crocantes e douradas", "preco": 27, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "mandioca", "nome": "Mandioca", "descricao": "Frita - Tradicional brasileira", "preco": 27, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "paodealho", "nome": "Pão de Alho", "descricao": "Bolinha Zinho - Crocante e saboroso", "preco": 12, "unidade": "4 UN", "destaque": false, "disponivel": true}
+                            ]
+                        }
+                    ]
+                },
 
-<div class="section">
-  <h2> Bebidas</h2>
-  <div class="item"><span>Laranja</span><span>R$ 15</span></div>
-  <div class="item"><span>Morango</span><span>R$ 20</span></div>
-  <div class="item"><span>Abacaxi</span><span>R$ 18</span></div>
-  <div class="item"><span>Uva</span><span>R$ 18</span></div>
-  <div class="item"><span>Agua de Coco</span><span>R$ </span></div>
-  <div class="item"><span>Energético</span><span>R$ </span></div>
-</div>
+                // ============================================
+                // SEÇÃO 2: BEBIDAS (NOVO!)
+                // ============================================
+                {
+                    "id": "bebidas",
+                    "titulo": "Bebidas",
+                    "icone": "🍺",
+                    "subcategorias": [
+                        {
+                            "id": "cervejas",
+                            "titulo": "Cervejas",
+                            "icone": "🍺",
+                            "produtos": [
+                                {"id": "heineken", "nome": "Heineken", "descricao": "Long neck 330ml", "preco": 12, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "brahma", "nome": "Brahma", "descricao": "Long neck 330ml", "preco": 9, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "corona", "nome": "Corona", "descricao": "Long neck 330ml com limão", "preco": 13, "unidade": null, "destaque": true, "disponivel": true},
+                                {"id": "stella", "nome": "Stella Artois", "descricao": "Long neck 330ml", "preco": 12, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "budweiser", "nome": "Budweiser", "descricao": "Long neck 330ml", "preco": 10, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "estrella", "nome": "Estrella Galicia", "descricao": "Long neck 330ml", "preco": 14, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "drinks",
+                            "titulo": "Drinks",
+                            "icone": "🍹",
+                            "produtos": [
+                                {"id": "caipirinha", "nome": "Caipirinha", "descricao": "Limão tradicional", "preco": 18, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "caipiroska", "nome": "Caipiroska", "descricao": "Limão com vodka", "preco": 20, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "mojito", "nome": "Mojito", "descricao": "Rum, hortelã, limão e água com gás", "preco": 25, "unidade": null, "destaque": true, "disponivel": true},
+                                {"id": "gint", "nome": "Gin Tônica", "descricao": "Gin importado com tônica e especiarias", "preco": 28, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "aperol", "nome": "Aperol Spritz", "descricao": "Aperol, prosecco e água com gás", "preco": 26, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "margarita", "nome": "Margarita", "descricao": "Tequila, limão e licor de laranja", "preco": 24, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "refrigerantes",
+                            "titulo": "Refrigerantes",
+                            "icone": "🥤",
+                            "produtos": [
+                                {"id": "coca", "nome": "Coca-Cola", "descricao": "Lata 350ml", "preco": 6, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "guarana", "nome": "Guaraná Antarctica", "descricao": "Lata 350ml", "preco": 6, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "sprite", "nome": "Sprite", "descricao": "Lata 350ml", "preco": 6, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "fanta", "nome": "Fanta Laranja", "descricao": "Lata 350ml", "preco": 6, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "coca2l", "nome": "Coca-Cola", "descricao": "Garrafa 2L", "preco": 14, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "sucos",
+                            "titulo": "Sucos Naturais",
+                            "icone": "🧃",
+                            "produtos": [
+                                {"id": "laranja", "nome": "Suco de Laranja", "descricao": "Natural espremido na hora", "preco": 12, "unidade": "300ml", "destaque": false, "disponivel": true},
+                                {"id": "maracuja", "nome": "Suco de Maracujá", "descricao": "Refrescante", "preco": 12, "unidade": "300ml", "destaque": false, "disponivel": true},
+                                {"id": "acerola", "nome": "Suco de Acerola", "descricao": "Vitaminado", "preco": 12, "unidade": "300ml", "destaque": false, "disponivel": true},
+                                {"id": "limao", "nome": "Suco de Limão", "descricao": "Com água com gás", "preco": 10, "unidade": "300ml", "destaque": false, "disponivel": true},
+                                {"id": "abacaxi", "nome": "Suco de Abacaxi", "descricao": "Com hortelã", "preco": 12, "unidade": "300ml", "destaque": false, "disponivel": true}
+                            ]
+                        },
+                        {
+                            "id": "agua",
+                            "titulo": "Água e Outros",
+                            "icone": "💧",
+                            "produtos": [
+                                {"id": "aguasg", "nome": "Água com Gás", "descricao": "500ml", "preco": 4, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "aguas", "nome": "Água sem Gás", "descricao": "500ml", "preco": 4, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "tonica", "nome": "Água Tônica", "descricao": "Lata 350ml", "preco": 8, "unidade": null, "destaque": false, "disponivel": true},
+                                {"id": "redbull", "nome": "Red Bull", "descricao": "Energy drink 250ml", "preco": 18, "unidade": null, "destaque": false, "disponivel": true}
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "config": {
+                "moeda": "R$",
+                "corPrimaria": "#0066cc",
+                "corSecundaria": "#ff8c00"
+            }
+        };
 
-<div class="section">
-  <h2> Refrigerante 2l, Lata 350ml, 600ml</h2>
-  <div class="item"><span>Coca-cola</span><span>R$ 15</span></div>
-  <div class="item"><span>Fanta</span><span>R$ 20</span></div>
-  <div class="item"><span>Guarana</span><span>R$ 18</span></div>
-</div>
+        // ============================================
+        // FUNÇÕES DE RENDERIZAÇÃO
+        // ============================================
 
-<div class="footer">
-  ⚽ Ambiente agradável • 📺 Futebol • 👨‍👩‍👧 Espaço família
-</div>
+        function renderMenu(data) {
+            document.title = data.restaurante.nome + ' - Cardápio';
+            document.getElementById('logo-img').src = data.restaurante.logo;
+            document.getElementById('logo-img').alt = data.restaurante.nome;
+            document.getElementById('slogan').textContent = data.restaurante.slogan;
+            document.getElementById('footer-nome').textContent = '🌴 ' + data.restaurante.nome + ' ' + data.restaurante.subtitulo + ' 🌴';
 
-</div>
+            const menuContainer = document.getElementById('menu-container');
+            menuContainer.innerHTML = '';
+
+            data.cardapio.forEach((secao) => {
+                const sectionEl = document.createElement('section');
+                sectionEl.className = 'section';
+                sectionEl.innerHTML = `
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>${secao.titulo}</span>
+                        <div style="display: flex; align-items: center;">
+                            <span class="icon">${secao.icone}</span>
+                            <span class="toggle">[v]</span>
+                        </div>
+                    </div>
+                    <div class="section-content" id="section-${secao.id}"></div>
+                `;
+
+                const contentEl = sectionEl.querySelector(`#section-${secao.id}`);
+
+                secao.subcategorias.forEach(sub => {
+                    const subEl = document.createElement('div');
+                    subEl.className = 'subcategory';
+
+                    let produtosHTML = '';
+                    sub.produtos.forEach(prod => {
+                        const disponivelClass = prod.disponivel ? '' : 'indisponivel';
+                        const unidadeHTML = prod.unidade ? `<span class="product-banner">${prod.unidade}</span>` : '';
+                        const destaqueHTML = prod.destaque ? `<span class="product-banner destaque">⭐ TOP</span>` : '';
+
+                        produtosHTML += `
+                            <div class="product-card ${disponivelClass}" data-id="${prod.id}">
+                                <div class="product-header">
+                                    <span class="product-name">${prod.nome}</span>
+                                    <span class="product-price">${data.config.moeda} ${prod.preco}</span>
+                                </div>
+                                <p class="product-description">${prod.descricao}</p>
+                                <div class="product-badges">
+                                    ${unidadeHTML}
+                                    ${destaqueHTML}
+                                </div>
+                            </div>
+                        `;
+                    });
+
+                    subEl.innerHTML = `
+                        <h3 class="subcategory-title">
+                            <span class="subcategory-icon">${sub.icone}</span>
+                            ${sub.titulo}
+                        </h3>
+                        <div class="products-grid">
+                            ${produtosHTML}
+                        </div>
+                    `;
+
+                    contentEl.appendChild(subEl);
+                });
+
+                menuContainer.appendChild(sectionEl);
+            });
+
+            const socialContainer = document.getElementById('social-links');
+            const instagram = data.restaurante.contato.instagram.replace('@', '');
+            const whatsapp = data.restaurante.contato.whatsapp.replace(/\D/g, '');
+            socialContainer.innerHTML = `
+                <a href="https://instagram.com/${instagram}" title="Instagram">📷</a>
+                <a href="https://wa.me/${whatsapp}" title="WhatsApp">📱</a>
+            `;
+
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 500);
+        }
+
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('collapsed');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMenu(MENU_DATA);
+        });
+    </script>
 </body>
 </html>
